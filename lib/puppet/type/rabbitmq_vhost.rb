@@ -16,4 +16,9 @@ Puppet::Type.newtype(:rabbitmq_vhost) do
     newvalues(/^\S+$/)
   end
 
+  newparam(:user) do
+    'The user to grant admin permissions to'
+    newvalues(/^\S+$/)
+  end
+
 end

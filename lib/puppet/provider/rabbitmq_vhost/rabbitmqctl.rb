@@ -20,6 +20,7 @@ Puppet::Type.type(:rabbitmq_vhost).provide(:rabbitmqctl) do
 
   def create
     rabbitmqctl('add_vhost', resource[:name])
+    rabbitmqctl('set_permissions', '-p', resource['name'], resource[:user], '.*', '.*', '.*')
   end
 
   def destroy
