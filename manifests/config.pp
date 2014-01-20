@@ -4,6 +4,7 @@ class rabbitmq::config {
   $cluster_node_type          = $rabbitmq::cluster_node_type
   $cluster_nodes              = $rabbitmq::cluster_nodes
   $config                     = $rabbitmq::config
+  $config_dir                 = $rabbitmq::config_dir
   $config_cluster             = $rabbitmq::config_cluster
   $config_path                = $rabbitmq::config_path
   $config_mirrored_queues     = $rabbitmq::config_mirrored_queues
@@ -47,14 +48,14 @@ class rabbitmq::config {
     $_cluster_nodes = $cluster_nodes
   }
 
-  file { '/etc/rabbitmq':
+  file { $config_dir:
     ensure  => directory,
     owner   => '0',
     group   => '0',
     mode    => '0644',
   }
 
-  file { '/etc/rabbitmq/ssl':
+  file { "${config_dir}/ssl":
     ensure  => directory,
     owner   => '0',
     group   => '0',

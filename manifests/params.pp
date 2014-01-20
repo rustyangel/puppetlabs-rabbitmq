@@ -12,6 +12,7 @@ class rabbitmq::params {
       $package_source   = ''
       $version          = '3.1.3-1'
       $base_version     = regsubst($version,'^(.*)-\d$','\1')
+      $config_dir       = '/etc/rabbitmq'
       # This must remain at the end as we need $base_version and $version defined first
     }
     'Debian': {
@@ -21,6 +22,7 @@ class rabbitmq::params {
       $package_provider = 'apt'
       $package_source   = ''
       $version          = '3.1.5'
+      $config_dir       = '/etc/rabbitmq'
     }
     'RedHat', 'SUSE': {
       $package_ensure   = 'installed'
@@ -31,6 +33,14 @@ class rabbitmq::params {
       $base_version     = regsubst($version,'^(.*)-\d$','\1')
       # This must remain at the end as we need $base_version and $version defined first.
       $package_source   = "http://www.rabbitmq.com/releases/rabbitmq-server/v${base_version}/rabbitmq-server-${version}.noarch.rpm"
+      $config_dir       = '/etc/rabbitmq'
+    }
+    'FreeBSD': {
+      $package_ensure   = 'installed'
+      $package_name     = 'rabbitmq'
+      $service_name     = 'rabbitmq'
+      $package_provider = 'pkgng'
+      $config_dir       = '/usr/local/etc/rabbitmq'
     }
     default: {
       fail("The ${module_name} module is not supported on an ${::osfamily} based system.")
@@ -52,13 +62,13 @@ class rabbitmq::params {
   $config                     = 'rabbitmq/rabbitmq.config.erb'
   $config_cluster             = false
   $config_mirrored_queues     = false
-  $config_path                = '/etc/rabbitmq/rabbitmq.config'
+  $config_path                = "${config_dir}/rabbitmq.config"
   $config_stomp               = false
   $default_user               = 'guest'
   $default_pass               = 'guest'
   $delete_guest_user          = false
   $env_config                 = 'rabbitmq/rabbitmq-env.conf.erb'
-  $env_config_path            = '/etc/rabbitmq/rabbitmq-env.conf'
+  $env_config_path            = "${config_dir}/rabbitmq-env.conf"
   $erlang_cookie              = 'EOKOWXQREETZSHFNTPEY'
   $manage_service             = true
   $node_ip_address            = 'UNSET'
