@@ -21,4 +21,6 @@ Puppet::Type.newtype(:rabbitmq_vhost) do
     newvalues(/^\S+$/)
   end
 
+  autorequire(:service) { 'rabbitmq-server' }
+
 end
